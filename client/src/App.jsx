@@ -46,7 +46,7 @@ const App = () => {
             element={user ? <Navigate to="/" /> : <Login />}
           />
           <Route
-            path="/post/:id"
+            path="/event/:recordid"
             element={user ? <Post /> : <Navigate to="/login" />}
           />
         </Routes>

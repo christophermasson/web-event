@@ -1,22 +1,8 @@
 import Card from "../components/Card";
-import { posts } from "../data";
 import axios from "axios";
-import { useEffect, useState, Fragment } from "react";
+import { useEffect, useState } from "react";
 
 const Home = () => {
-  const api = () => {
-    axios
-      .get(
-        "https://public.opendatasoft.com/api/v2/catalog/datasets?select=%2A&limit=10&offset=0&timezone=UTC"
-      )
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   // navigation
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -47,21 +33,29 @@ const Home = () => {
           }}
         />
       </div>
-      <button onClick={api}>click</button>
+      <div className="event">
+        {data
+          .filter((val) => {
+            console.log("val.fields", val.fields);
+            if (searchTerm === "") {
+              return val;
+            } else if (
+              val.fields.title.toLowerCase().includes(searchTerm.toLowerCase())
+            ) {
+              return val;
+            } else if (
+              val.fields.address
+                .toLowerCase()
+                .includes(searchTerm.toLowerCase())
+            ) {
+              return val;
+            }
+          })
 
-      {data
-        .filter((val) => {
-          if (searchTerm == "") {
-            return val;
-          } else if (
-            val.fields.title.toLowerCase().includes(searchTerm.toLowerCase())
-          ) {
-            return val;
-          }
-        })
-        .map((item) => (
-          <Card key={item.id} item={item} />
-        ))}
+          .map((item) => (
+            <Card key={item.recordid} item={item} />
+          ))}
+      </div>
     </div>
   );
 };
